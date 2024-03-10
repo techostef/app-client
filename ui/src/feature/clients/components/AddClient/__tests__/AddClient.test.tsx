@@ -81,7 +81,6 @@ describe('Testing component AddClient', () => {
 			return expect(mockPostClient).toHaveBeenNthCalledWith(1, {
 				email: 'test@gmail.com',
 				firstName: 'john',
-				id: '',
 				lastName: 'john smith',
 				phoneNumber: '+624263237',
 			});
