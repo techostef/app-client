@@ -1,0 +1,15 @@
+{
+	"clients": "Clients",
+	"searchClientPlaceholder": "Search clients...",
+	"name": "Name",
+	"phoneNumber": "Phone Number",
+	"email": "Email",
+	"createClient": "Create client",
+	"createNewClient": "Create new client",
+	"continue": "Continue",
+	"firstName": "First Name",
+	"lastName": "Last Name",
+	"personDetails": "Person details",
+	"contactDetails": "Contact details",
+	"back": "Back"
+}
