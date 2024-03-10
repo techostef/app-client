@@ -8,6 +8,7 @@ interface ITheme {
 	light: string;
 	gray: string;
 	success: string;
+	danger: string;
 }
 
 interface IThemeStorageData {
@@ -39,6 +40,7 @@ export const ThemeStorage = create<IThemeStorageData & IThemeStorageAction>(() =
 		light: 'rgb(149 149 149)',
 		gray: '#d5d5d5',
 		success: 'green',
+		danger: '#d32f2f',
 	},
 	spacing: {
 		xs: 2,

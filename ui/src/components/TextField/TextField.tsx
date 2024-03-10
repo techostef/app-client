@@ -1,5 +1,5 @@
 import { css, cx } from '@emotion/css';
-import { Input as Component, InputProps } from '@mui/material';
+import { Input as Component, FormHelperText, InputProps } from '@mui/material';
 import { Box } from 'components/Box';
 import { Typography } from 'components/Typography';
 import { PropsWithChildren, ReactNode } from 'react';
@@ -14,12 +14,13 @@ interface IProps
 	endnode?: ReactNode;
 	label?: string;
 	color?: string;
+	error?: string;
 }
 
-function TextField({ className, label, color, ...props }: IProps) {
+function TextField({ className, label, color, error, ...props }: IProps) {
 	const classes = style();
 	return (
-		<Box>
+		<Box className='text-field'>
 			{label && (
 				<Box>
 					<Typography
@@ -31,7 +32,8 @@ function TextField({ className, label, color, ...props }: IProps) {
 					</Typography>
 				</Box>
 			)}
-			<Component {...props} className={cx(classes.root, className)} endAdornment={props.endnode} />
+			<Component {...props} className={cx(classes.root, className)} endAdornment={props.endnode} error={!!error} />
+			{error && <FormHelperText error>{error}</FormHelperText>}
 		</Box>
 	);
 }
@@ -51,6 +53,9 @@ const style = () => {
 				':before, :after': {
 					borderBottom: 0,
 					content: 'unset',
+				},
+				'&.Mui-error': {
+					border: `1px solid ${color.danger}`,
 				},
 			},
 			'& .MuiInputBase-input': {

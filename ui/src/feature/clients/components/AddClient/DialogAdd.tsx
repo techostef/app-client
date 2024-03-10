@@ -11,9 +11,9 @@ import Step from 'components/Stepper/Step';
 import StepLabel from 'components/Stepper/StepLabel';
 import Stepper from 'components/Stepper/Stepper';
 import { Typography } from 'components/Typography';
-import { useAddForm } from 'feature/clients/contexts/useAddForm';
 import useClients from 'feature/clients/contexts/useClients';
 import { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Theme } from 'storage/useTheme';
 import ContactDetails from './ContactDetails';
@@ -28,8 +28,15 @@ function DialogAdd({ open, handleClose }: IProps) {
 	const { t } = useTranslation();
 	const steps = [t('personDetails'), t('contactDetails')];
 	const [activeStep, setActiveStep] = useState(0);
-	const { client, restartClient } = useAddForm();
 	const { handleCreateClient, isLoading } = useClients();
+	const methods = useForm<IClient>({
+		defaultValues: {
+			lastName: '',
+			firstName: '',
+			email: '',
+			phoneNumber: '',
+		},
+	});
 
 	const classes = style();
 
@@ -41,9 +48,9 @@ function DialogAdd({ open, handleClose }: IProps) {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
 	};
 
-	const submit = () => {
-		handleCreateClient(client, () => {
-			restartClient();
+	const onSubmit = (data: IClient) => {
+		handleCreateClient(data, () => {
+			methods.reset();
 			handleClose();
 			setActiveStep(0);
 		});
@@ -79,7 +86,7 @@ function DialogAdd({ open, handleClose }: IProps) {
 							variant='contained'
 							className='next'
 							disabled={isLoading}
-							onClick={submit}
+							type='submit'
 						>
 							{t('createClient')}
 						</Button>
@@ -90,38 +97,42 @@ function DialogAdd({ open, handleClose }: IProps) {
 
 	return (
 		<Dialog onClose={handleClose} aria-labelledby='customized-dialog-title' className={classes.root} open={open}>
-			<DialogTitle data-testid='customized-dialog-title' id='customized-dialog-title'>
-				{t('createNewClient')}
-			</DialogTitle>
-			<IconButton
-				aria-label='close'
-				onClick={handleClose}
-				sx={{
-					position: 'absolute',
-					right: 8,
-					top: 8,
-					color: (theme) => theme.palette.grey[500],
-				}}
-			>
-				<CloseIcon />
-			</IconButton>
-			<DialogContent>
-				<Stepper activeStep={activeStep}>
-					{steps.map((label) => {
-						const stepProps: { completed?: boolean } = {};
-						const labelProps: {
-							optional?: React.ReactNode;
-						} = {};
-						return (
-							<Step key={label} {...stepProps}>
-								<StepLabel {...labelProps}>{label}</StepLabel>
-							</Step>
-						);
-					})}
-				</Stepper>
-				{renderContent()}
-			</DialogContent>
-			<DialogActions className={classes.actionSection}>{renderActions()}</DialogActions>
+			<FormProvider {...methods}>
+				<form onSubmit={methods.handleSubmit(onSubmit)}>
+					<DialogTitle data-testid='customized-dialog-title' id='customized-dialog-title'>
+						{t('createNewClient')}
+					</DialogTitle>
+					<IconButton
+						aria-label='close'
+						onClick={handleClose}
+						sx={{
+							position: 'absolute',
+							right: 8,
+							top: 8,
+							color: (theme) => theme.palette.grey[500],
+						}}
+					>
+						<CloseIcon />
+					</IconButton>
+					<DialogContent>
+						<Stepper activeStep={activeStep}>
+							{steps.map((label) => {
+								const stepProps: { completed?: boolean } = {};
+								const labelProps: {
+									optional?: React.ReactNode;
+								} = {};
+								return (
+									<Step key={label} {...stepProps}>
+										<StepLabel {...labelProps}>{label}</StepLabel>
+									</Step>
+								);
+							})}
+						</Stepper>
+						{renderContent()}
+					</DialogContent>
+					<DialogActions className={classes.actionSection}>{renderActions()}</DialogActions>
+				</form>
+			</FormProvider>
 		</Dialog>
 	);
 }
