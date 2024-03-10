@@ -9,6 +9,7 @@ export default function App() {
 	return (
 		<div className='App'>
 			<Routes>
+				<Route path='/:lang' Component={Clients} />
 				<Route path='/' element={<Clients />} />
 			</Routes>
 			<ToastContainer />

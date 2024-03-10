@@ -1,0 +1,15 @@
+{
+	"clients": "Klien",
+	"searchClientPlaceholder": "Cari klien...",
+	"name": "Nama",
+	"phoneNumber": "Nomer handphone",
+	"email": "Email",
+	"createClient": "Buat klien",
+	"createNewClient": "Buat baru klien",
+	"continue": "Lanjut",
+	"firstName": "Nama depan",
+	"lastName": "Nama belakang",
+	"personDetails": "Detail orang",
+	"contactDetails": "Detail kontak",
+	"back": "Kembali"
+}
